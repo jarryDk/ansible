@@ -1,3 +1,9 @@
 = Ansible
 
 Repo for Ansible stuff.
+
+== postgress-install
+
+Ansible playbook to install and start new Postgress instances on Fedora/CentOs/RHEL.
+
+link:postgress-install/README.adoc[postgress-install/README.adoc]
