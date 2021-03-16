@@ -1,0 +1,99 @@
+= postgress-install
+
+Ansible playbook to install and start new Postgress instances on Fedora/CentOs/RHEL.
+
+The playbook will do
+
+- install postgress via yum
+- do configuration (init database + create service file for systemd)
+- apply SELinux
+- enable and start service
+
+----
+├── postgress-install.yaml
+├── README.adoc
+└── roles
+    ├── config
+    │   ├── tasks
+    │   │   └── main.yaml
+    │   └── templates
+    │       └── postgres.services.j2
+    ├── install
+    │   └── tasks
+    │       └── main.yaml
+    ├── selinux
+    │   └── tasks
+    │       └── main.yaml
+    └── service
+        └── tasks
+            └── main.yaml
+----
+
+
+
+== USE
+
+[source,bash]
+----
+ansible-playbook postgress-install.yaml \
+    --ask-become-pass \
+    -e 'pg_instance_name=pg-instance-019' \
+    -e 'pg_port=15432' \
+    -e 'pg_data_base=/var/lib/pgsql'
+----
+
+----
+systemctl status postgresql-pg-instance-019
+● postgresql-pg-instance-019.service - PostgreSQL database server
+     Loaded: loaded (/usr/lib/systemd/system/postgresql-pg-instance-019.service; enabled; vendor preset: disabled)
+     Active: active (running) since Tue 2021-03-16 12:43:43 CET; 40s ago
+    Process: 74572 ExecStartPre=/usr/libexec/postgresql-check-db-dir postgresql-pg-instance-019 (code=exited, status=0/SUCCESS)
+   Main PID: 74574 (postmaster)
+      Tasks: 8 (limit: 18989)
+     Memory: 16.1M
+        CPU: 72ms
+     CGroup: /system.slice/postgresql-pg-instance-019.service
+             ├─74574 /usr/bin/postmaster -D /var/lib/pgsql/data-pg-instance-019
+             ├─74575 postgres: logger
+             ├─74577 postgres: checkpointer
+             ├─74578 postgres: background writer
+             ├─74579 postgres: walwriter
+             ├─74580 postgres: autovacuum launcher
+             ├─74581 postgres: stats collector
+             └─74582 postgres: logical replication launcher
+----
+
+
+If you have have messed up your python installation a bit.
+
+[source,bash]
+----
+ansible-playbook postgress-install.yaml \
+    --ask-become-pass  \
+    -e 'pg_instance_name=pg-instance-019' \
+    -e 'pg_port=15432' \
+    -e 'pg_data_base=/var/lib/pgsql/' \
+    -e 'ansible_python_interpreter=/usr/bin/python3'
+----
+
+== Defaults Postgress values
+
+Default vaules in `/usr/lib/systemd/system/postgresql.service`
+
+PGDATA=/var/lib/pgsql/data
+
+PGPORT=5432
+
+
+== SELinux
+https://fedoraproject.org/wiki/PostgreSQL#SELinux
+
+== Links
+
+https://severalnines.com/database-blog/postgresql-deployment-and-maintenance-ansible
+
+https://blog.apcelent.com/using-ansible-to-set-up-postgresql.html
+
+https://stackoverflow.com/questions/25148693/need-help-to-change-postgresql-port-on-centos-7/25152682
+https://www.postgresql.org/docs/10/server-start.html
+https://unix.stackexchange.com/questions/502788/separate-systemd-script-for-postgresql-instances

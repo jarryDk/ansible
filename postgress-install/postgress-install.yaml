@@ -1,0 +1,15 @@
+- hosts: all
+
+  become: yes
+
+  vars:
+    pg_port: 15432
+    pg_data_base: /var/lib/pgsql
+    pg_instance_name: pg-instance-001 
+  
+  roles: 
+    - { role : install }
+    - { role : config }
+    - { role : selinux }
+    - { role : service }
+  

@@ -1,0 +1,9 @@
+- name: Enable service postgresql, and not touch the state
+  ansible.builtin.service:
+    name: postgresql-{{ pg_instance_name }}
+    enabled: yes
+
+- name: Start service postgresql, if not started
+  ansible.builtin.service:
+    name: postgresql-{{ pg_instance_name }}
+    state: started

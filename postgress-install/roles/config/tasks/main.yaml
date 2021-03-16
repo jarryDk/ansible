@@ -1,0 +1,11 @@
+- name: Init Postgres database for this instanse
+  command: initdb -D {{ pg_data_base }}/data-{{ pg_instance_name }}
+  become: true
+  become_user: postgres
+
+- template:
+    src: templates/postgres.services.j2
+    dest: /usr/lib/systemd/system/postgresql-{{ pg_instance_name }}.service
+    owner: root
+    group: root
+    mode: 0644

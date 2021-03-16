@@ -1,0 +1,5 @@
+- name: Install postgresql
+  yum:
+    name:      
+      - postgresql-server
+    state: present

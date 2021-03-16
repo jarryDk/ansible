@@ -1,0 +1,5 @@
+- name: Set the SELinux policy for the Postgres data directory
+  command: semanage fcontext -a -t postgresql_db_t "{{ pg_data_base }}/data-{{ pg_instance_name }}(/.*)?"
+
+- name: Set the SELinux policy for the Postgres port
+  command: semanage port -a -t postgresql_port_t -p tcp {{ pg_port }}
