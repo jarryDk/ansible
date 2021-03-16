@@ -33,6 +33,10 @@ The playbook will do
 
 == USE
 
+- pg_instance_name : defaults to `pg-instance-001`
+- pg_port : defaults to `15432`
+- pg_data_base : defaults to `/var/lib/pgsq` (optional)
+
 [source,bash]
 ----
 ansible-playbook postgress-install.yaml \
@@ -40,6 +44,15 @@ ansible-playbook postgress-install.yaml \
     -e 'pg_instance_name=pg-instance-019' \
     -e 'pg_port=15432' \
     -e 'pg_data_base=/var/lib/pgsql'
+----
+
+Service located : `/usr/lib/systemd/system/postgresql-pg-instance-019.service`
+
+Data located : `/var/lib/pgsql/data-pg-instance-019`
+
+[source,bash]
+----
+systemctl status postgresql-pg-instance-019
 ----
 
 ----
